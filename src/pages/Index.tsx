@@ -84,7 +84,7 @@ const Index = () => {
         {/* Left Control Panel */}
         <div className="md:col-span-3 space-y-4">
           {!isLoggedIn ? (
-            <div className="flex justify-center items-center min-h-[80vh]">
+            <div className="flex justify-center items-center min-h-[80vh] md:col-span-12 md:absolute md:inset-0 md:z-10">
               <div className="mdt-panel p-4 space-y-6 w-full max-w-md mx-auto">
                 <h2 className="text-2xl font-bold text-center mb-6">MDT Login</h2>
                 
@@ -234,3 +234,4 @@ const Index = () => {
 };
 
 export default Index;
+
