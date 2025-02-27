@@ -1,7 +1,15 @@
+
 import { useState } from "react";
 import { Shield, AlertTriangle, LogOut, Search, Car, History, FileText, Database, UserCheck, Briefcase, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const Index = () => {
   const { toast } = useToast();
@@ -50,6 +58,14 @@ const Index = () => {
     "Code 6": "bg-red-500",
   };
 
+  const statusDescriptions: Record<string, string> = {
+    "Code 1": "On Patrol",
+    "Code 2": "Arrived at Station",
+    "Code 4": "Traffic Stop",
+    "Code 5": "Arrived on Scene",
+    "Code 6": "Unavailable",
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground p-4">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-4">
@@ -68,20 +84,24 @@ const Index = () => {
                 <div className="space-y-2">
                   <p className="text-sm text-muted-foreground">Current Status</p>
                   <div className={`mdt-status ${statusColors[currentStatus]}`}>
-                    {currentStatus}
+                    {currentStatus} - {statusDescriptions[currentStatus]}
                   </div>
                 </div>
                 
                 <div className="space-y-2">
-                  {Object.keys(statusColors).map((status) => (
-                    <button
-                      key={status}
-                      onClick={() => handleStatusChange(status)}
-                      className="mdt-button"
-                    >
-                      {status}
-                    </button>
-                  ))}
+                  <label className="text-sm text-muted-foreground">Change Status</label>
+                  <Select defaultValue={currentStatus} onValueChange={handleStatusChange}>
+                    <SelectTrigger className="w-full bg-accent text-foreground">
+                      <SelectValue placeholder="Select status" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background border border-border">
+                      {Object.keys(statusColors).map((status) => (
+                        <SelectItem key={status} value={status}>
+                          {status} - {statusDescriptions[status]}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <button onClick={handleDuress} className="mdt-button-danger">
