@@ -116,4 +116,11 @@
   .mdt-thumb {
     @apply border-2 border-[#00ff00] rounded;
   }
+  
+  /* New action button style */
+  .mdt-action-button {
+    @apply flex flex-col items-center justify-center gap-2 p-4 bg-[#1a1a2e] 
+           text-[#00ff00] border border-[#00ff00] rounded-lg hover:bg-[#282846] 
+           transition-colors duration-200;
+  }
 }
