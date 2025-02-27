@@ -10,24 +10,36 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 
 const Index = () => {
   const { toast } = useToast();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentStatus, setCurrentStatus] = useState("Code 1");
   const [activeSection, setActiveSection] = useState("dashboard");
+  const [callSign, setCallSign] = useState("");
 
   const handleLogin = () => {
+    if (!callSign.trim()) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Please enter your call sign to continue",
+      });
+      return;
+    }
+    
     setIsLoggedIn(true);
     toast({
       title: "Logged In",
-      description: "Successfully logged into MDT",
+      description: `Officer ${callSign} successfully logged into MDT`,
     });
   };
 
   const handleLogout = () => {
     setIsLoggedIn(false);
     setActiveSection("dashboard");
+    setCallSign("");
     toast({
       title: "Logged Out",
       description: "Successfully logged out of MDT",
@@ -71,51 +83,73 @@ const Index = () => {
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-4">
         {/* Left Control Panel */}
         <div className="md:col-span-3 space-y-4">
-          <div className="mdt-panel p-4 space-y-3">
-            <h2 className="text-lg font-bold mb-4">Control Panel</h2>
-            
-            {!isLoggedIn ? (
-              <button onClick={handleLogin} className="mdt-button">
-                <Shield className="w-4 h-4" />
-                Login to MDT
-              </button>
-            ) : (
-              <>
-                <div className="space-y-2">
-                  <p className="text-sm text-muted-foreground">Current Status</p>
-                  <div className={`mdt-status ${statusColors[currentStatus]}`}>
-                    {currentStatus} - {statusDescriptions[currentStatus]}
-                  </div>
-                </div>
+          {!isLoggedIn ? (
+            <div className="flex justify-center items-center min-h-[80vh]">
+              <div className="mdt-panel p-4 space-y-6 w-full max-w-md mx-auto">
+                <h2 className="text-2xl font-bold text-center mb-6">MDT Login</h2>
                 
-                <div className="space-y-2">
-                  <label className="text-sm text-muted-foreground">Change Status</label>
-                  <Select defaultValue={currentStatus} onValueChange={handleStatusChange}>
-                    <SelectTrigger className="w-full bg-accent text-foreground">
-                      <SelectValue placeholder="Select status" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-background border border-border">
-                      {Object.keys(statusColors).map((status) => (
-                        <SelectItem key={status} value={status}>
-                          {status} - {statusDescriptions[status]}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <label htmlFor="callsign" className="text-sm font-medium">
+                      Enter Call Sign
+                    </label>
+                    <Input
+                      id="callsign"
+                      placeholder="1-ADAM-12"
+                      value={callSign}
+                      onChange={(e) => setCallSign(e.target.value)}
+                      className="bg-accent text-foreground"
+                    />
+                  </div>
+                  
+                  <button 
+                    onClick={handleLogin} 
+                    className="mdt-button w-full mx-auto mt-6"
+                  >
+                    <Shield className="w-4 h-4" />
+                    Login to MDT
+                  </button>
                 </div>
+              </div>
+            </div>
+          ) : (
+            <div className="mdt-panel p-4 space-y-3">
+              <h2 className="text-lg font-bold mb-4">Control Panel</h2>
+              
+              <div className="space-y-2">
+                <p className="text-sm text-muted-foreground">Current Status</p>
+                <div className={`mdt-status ${statusColors[currentStatus]}`}>
+                  {currentStatus} - {statusDescriptions[currentStatus]}
+                </div>
+              </div>
+              
+              <div className="space-y-2">
+                <label className="text-sm text-muted-foreground">Change Status</label>
+                <Select defaultValue={currentStatus} onValueChange={handleStatusChange}>
+                  <SelectTrigger className="w-full bg-accent text-foreground">
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-background border border-border">
+                    {Object.keys(statusColors).map((status) => (
+                      <SelectItem key={status} value={status}>
+                        {status} - {statusDescriptions[status]}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-                <button onClick={handleDuress} className="mdt-button-danger">
-                  <AlertTriangle className="w-4 h-4" />
-                  DURESS
-                </button>
+              <button onClick={handleDuress} className="mdt-button-danger">
+                <AlertTriangle className="w-4 h-4" />
+                DURESS
+              </button>
 
-                <button onClick={handleLogout} className="mdt-button">
-                  <LogOut className="w-4 h-4" />
-                  Logout of MDT
-                </button>
-              </>
-            )}
-          </div>
+              <button onClick={handleLogout} className="mdt-button">
+                <LogOut className="w-4 h-4" />
+                Logout of MDT
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Main MDT Panel */}
@@ -188,7 +222,7 @@ const Index = () => {
               {/* Content will be implemented based on activeSection */}
               <p className="text-muted-foreground">
                 {activeSection === "dashboard" 
-                  ? "Select an option from the left panel to begin."
+                  ? `Officer ${callSign}, select an option from the left panel to begin.`
                   : `${activeSection} content will be implemented here.`}
               </p>
             </div>
