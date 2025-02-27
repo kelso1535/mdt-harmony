@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Shield, AlertTriangle, LogOut, Search, Car, History, FileText, Database, UserCheck, Briefcase, Users, FingerPrint, Pin, BarChart3, Lock, Shuffle, X, ArrowLeftCircle } from "lucide-react";
+import { Shield, AlertTriangle, LogOut, Search, Car, History, FileText, Database, UserCheck, Briefcase, Users, Fingerprint, Pin, BarChart3, Lock, Shuffle, X, ArrowLeftCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -287,7 +287,7 @@ const Index = () => {
             <div className="flex justify-center items-center min-h-[80vh] md:col-span-12 md:absolute md:inset-0 md:z-10">
               <div className="mdt-panel p-4 space-y-6 w-full max-w-md mx-auto">
                 <div className="flex justify-center mb-4">
-                  <FingerPrint className="w-16 h-16 text-gray-400" />
+                  <Fingerprint className="w-16 h-16 text-gray-400" />
                 </div>
                 <h2 className="text-2xl font-bold text-center mb-6">MDT Login</h2>
                 
